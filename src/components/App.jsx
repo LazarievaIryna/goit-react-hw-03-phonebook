@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import React, { Component } from 'react';
 import { Filter } from '../components/Filter/Filter';
 import ContactForm from './ContactForm';
@@ -6,18 +6,14 @@ import { ContactList } from './ContactList/ContactList';
 import { Container } from './App.styled';
 
 export class App extends Component {
-  state = {
-    contacts: [],
-    // name: '',
-    // number: '',
-    filter: '',
-  };
-  // [
-  //     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  //     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  //     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  //     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-  //   ],
+  constructor(){
+    super();
+    this.state = {
+      contacts: [],
+      filter: '',
+    };
+   }
+  
   componentDidMount() {
     const contacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(contacts);
@@ -31,16 +27,23 @@ export class App extends Component {
     }
   }
 
-  addNewContact = ({ name, number}) => {
+  addNewContact = ({ name, number, id }) => {
     const { contacts } = this.state;
-    const newContact = { name, number, id: nanoid() };
+    const newContact = { name, number, id };
 
-    contacts.find(contact => contact.name.toLowerCase() === name)
-      ? alert(`${name} is already in contacts.`)
-      : this.setState(({ contacts }) => ({
-          contacts: [...contacts, newContact],
-        }));
-  };
+    const checkName = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase() );
+    const checkNumber = contacts.find(contact => contact.number === number )
+    if(checkName){
+      alert(`${name} is already in contacts.`)
+    }
+    else if(checkNumber){
+      alert(`${number} is already in contacts.`)
+    }
+    else{
+      this.setState(({ contacts }) => ({
+               contacts: [...contacts, newContact],
+             }))
+    }}
 
   changeFilter = event => {
     this.setState({ filter: event.currentTarget.value });
@@ -49,13 +52,13 @@ export class App extends Component {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== nanoid),
     }));
-    console.log(nanoid);
+    // console.log(nanoid);
   };
   render() {
-    console.log(this.state);
+    // console.log(this.state);
 
     const { filter } = this.state;
-    // const { contacts } = this.state;
+    
     const normalizedFilter = this.state.filter.toLowerCase();
     const visibleContacts = this.state.contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
