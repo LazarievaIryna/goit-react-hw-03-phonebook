@@ -33,11 +33,9 @@ export class App extends Component {
 
     const checkName = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase() );
     const checkNumber = contacts.find(contact => contact.number === number )
-    if(checkName){
-      alert(`${name} is already in contacts.`)
-    }
-    else if(checkNumber){
-      alert(`${number} is already in contacts.`)
+  
+    if(checkName || checkNumber){
+      alert(`${name} is already in contacts as  ${number} `)
     }
     else{
       this.setState(({ contacts }) => ({
@@ -63,6 +61,7 @@ export class App extends Component {
     const visibleContacts = this.state.contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
+    console.log(visibleContacts)
 
     return (
       <Container>
@@ -72,10 +71,10 @@ export class App extends Component {
         <p>Find contacts by name</p>
 
         <Filter value={filter} onChange={this.changeFilter} />
-        <ContactList
+        {visibleContacts.length > 0 && < ContactList
           contactList={visibleContacts}
           onDeleteBtn={this.deleteBtn}
-        />
+        />}
       </Container>
     );
   }
