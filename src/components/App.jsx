@@ -30,12 +30,27 @@ export class App extends Component {
   addNewContact = ({ name, number, id }) => {
     const { contacts } = this.state;
     const newContact = { name, number, id };
+    
 
-    const checkName = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase() );
-    const checkNumber = contacts.find(contact => contact.number === number )
-  
-    if(checkName || checkNumber){
-      alert(`${name} is already in contacts as  ${number} `)
+    // const checkName = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase() );
+    // const checkNumber = contacts.find(contact => contact.number === number )
+
+    // console.log(contacts)
+
+    // if(checkName){
+    //   alert(`${name} is already in contacts as  ${number} `)
+    // } else if(checkNumber){
+      
+    //     alert(`${number} is already in contacts as  ${name}`)
+      
+    // }
+    const checkedNumber=contacts.find(contact => contact.number === number);
+    if(contacts.some(contact=>contact.name===name)){
+      return alert(`Contact with name "${name}" is already in contacts`);
+    } else if(checkedNumber){
+      return alert(
+        `Contact with number ${checkedNumber.number} is already in  ${checkedNumber.name}`
+      );
     }
     else{
       this.setState(({ contacts }) => ({
